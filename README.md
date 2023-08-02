@@ -20,7 +20,7 @@ CryptoOracle is a feature-rich web application built using React, JavaScript, HT
 
 ## Technologies Used
 
-- **Frontend**: React, JavaScript, HTML, CSS
+- **Frontend**: React, JavaScript, HTML, SCSS
 - **Data Visualization**: D3.js
 - **Routing**: React Router
 - **API Integration**: CoinGecko API
