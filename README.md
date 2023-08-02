@@ -1,4 +1,4 @@
-# Project Introduction: CryptoOracle - Your Ultimate Cryptocurrency Tracker
+#CryptoOracle
 
 Welcome to CryptoOracle, your go-to React app for monitoring and analyzing cryptocurrency data from various exchanges. Whether you're a seasoned trader or a crypto enthusiast, CryptoOracle provides you with the tools to watch, track, and visualize the latest trends and data for every cryptocurrency.
 
