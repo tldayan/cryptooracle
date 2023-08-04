@@ -2,12 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useParams,Outlet, useOutletContext,Link } from 'react-router-dom';
 import watchlist_star_nonfilled from "../assets/watchlist_star_nonfilled.png"
 import watchlist_star_filled from "../assets/watchlist_star_filled.png"
-
+import {useDispatch} from "react-redux"
+import {watchlistActions} from "./store/Watchlist-Slice"
+import {useSelector} from "react-redux"
 export default function Currencies() {
+  const dispatch = useDispatch()
+  const watchlist = useSelector((state) => state.watchlist.watchlist)
+  
+
+  function addToWatchlist(selectedCurrency) {
+    dispatch(watchlistActions.handleWatchlist(selectedCurrency))
+  }
     const paramsData = useParams();
     const isDarkMode = useOutletContext().isDarkMode
-    const watchlist = useOutletContext().watchlist
-    const setWatchList = useOutletContext().setWatchList
     
     
     const selectedCurrency = paramsData.id;
@@ -73,16 +80,6 @@ export default function Currencies() {
         copyButton.style.backgroundColor = "#19e898"
       }
 
-
-      function addToWatchlist(currency) {
-
-        if(watchlist.includes(currency) === false) {
-          setWatchList(prevList => [...prevList,selectedCurrency])
-        } else {
-          setWatchList(prevList => prevList.filter(eachCurrency => eachCurrency !== currency))
-          return;
-        }
-      }
       
 
     return (

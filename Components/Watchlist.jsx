@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useOutletContext,Link } from 'react-router-dom'
 import bigStar from "../assets/big_star.png"
+import {useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
+import { watchlistActions } from './store/Watchlist-Slice'
 
 export default function Watchlist() {
 
-    const watchlist = useOutletContext().watchlist/*  [bitcoin,ethereum] */
+    const watchlist = useSelector((state) => state.watchlist.watchlist)
+ 
     const lists = useOutletContext().lists
-    const setWatchList = useOutletContext().setWatchList
 
     const [watchlistCoinsData, setWatchlistCoinsData] = useState([])
 
@@ -27,11 +30,10 @@ export default function Watchlist() {
     },[watchlist])
 
 
+    const dispatch = useDispatch()
 
-    function RemoveFromWatchlist(currency) {
-
-        setWatchlistCoinsData([...watchlistCoinsData].filter(eachCoin => eachCoin.id !== currency))
-        setWatchList([...watchlist].filter(eachCoin => eachCoin !== currency))
+    function RemoveFromWatchlist(selectedCurrency) {
+      dispatch(watchlistActions.removeFromWatchlist(selectedCurrency))
     } 
 
 

@@ -7,6 +7,12 @@ import buildingDark from "../assets/building_dark.png"
 import gauge from "../assets/gauge.png"
 import gaugeDark from "../assets/gauge_dark.png"
 import miniStar from "../assets/star-solid.svg"
+import ListStar from "../assets/miniListStar.png"
+import ListStarFilled from "../assets/miniListStar_filled.png"
+import {useSelector} from "react-redux"
+
+import {useDispatch} from "react-redux"
+import {watchlistActions} from "./store/Watchlist-Slice"
 
 import { useEffect, useState} from 'react'
 import {Link, useOutletContext} from "react-router-dom"
@@ -22,8 +28,7 @@ const CryptoList = () => {
   const [isPositive,setIsPositive] = useState(undefined)
   const [trendingCoins, setTrendingCoins] = useState([])
   const [exchanges,setExchanges] = useState([])
-  const [formattedGlobalMcap, setFormattedGlobalMcap] = useState("");
-
+  const [finalList, setFinalList] = useState([])
 
 /* FETCH TRENDING COINS */
 useEffect(() => {
@@ -146,8 +151,6 @@ useEffect(() => {
 
 
 
-  
-  const [finalList, setFinalList] = useState([])
 
   useEffect(() => {
     setFinalList(lists);
@@ -213,6 +216,13 @@ useEffect(() => {
     rowsContainer.classList.toggle("hide")
   }
 
+
+  const dispatch = useDispatch()
+  const watchlist = useSelector((state) => state.watchlist.watchlist)
+
+  function addToWatchlist(selectedCurrency) {
+    dispatch(watchlistActions.handleWatchlist(selectedCurrency.toLowerCase()))
+  }
 
   
 
@@ -287,6 +297,7 @@ useEffect(() => {
         {currentCoins.length ? <table>
           <thead>
           <tr>
+            <th><img className='list_star' src={ListStarFilled} alt="" /></th>
             <th>#</th>
             <th>Name</th>
             <th>Price</th>
@@ -301,6 +312,7 @@ useEffect(() => {
           <tbody>
           {currentCoins.map(eachlist => {
             return <tr key={eachlist.market_cap_rank}>
+              <td><button className='watchlist_star_btn' onClick={() => addToWatchlist(eachlist.id)}><img className='list_star' src={watchlist.includes(eachlist.id.toLowerCase()) ? ListStarFilled : ListStar} alt="" /></button></td>
               <td>{eachlist.market_cap_rank}</td>
               <td className='name' ><div className='name_container'><img loading='lazy' className='trending_icons' src={eachlist.image} alt="" /><Link className='name' to={`/currencies/${eachlist.id}`}>{eachlist.name}</Link><span className='faded_text'>{(eachlist.symbol).toUpperCase()}</span></div></td>
               <td>${eachlist?.current_price.toLocaleString()}</td>

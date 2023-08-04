@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Philosopher&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -874,8 +875,28 @@ td {
   border-top: var(--tabledataborder);
 }
 
+.watchlist_star_btn {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+button,
+img,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.list_star {
+  padding: 2px;
+  display: block;
+}
+
 .name_container {
-  /*   border: 1px solid black; */
   display: flex;
   align-items: center;
   gap: 7px;
@@ -935,10 +956,6 @@ td {
   height: 134px;
 }
 
-/* svg {
-  margin: 0 auto;
-  display: flex;
-} */
 .chart-color1 {
   fill: #05fb9c;
 }
@@ -1497,10 +1514,10 @@ td {
   padding: 4px 5px;
   font-size: clamp(0.3rem, 4vw, 0.75rem);
   color: #c8c8c8;
+  overflow: hidden;
 }
 .share_link_container p {
   width: 80%;
-  background-color: red;
   white-space: nowrap;
 }
 
@@ -1536,7 +1553,7 @@ td {
 }
 
 .dark_overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -1876,7 +1893,7 @@ pre {
 
 /* MAIN LOADING ANIMATION */
 svg text {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.8rem, 5vw, 3rem);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 8px;
@@ -1884,7 +1901,7 @@ svg text {
   stroke: rgb(255, 255, 255);
   stroke-width: 2px;
   animation: animated-stroke 4s forwards;
-  font-family: "Raleway", sans-serif;
+  font-family: "Lobster Two", cursive;
   text-anchor: middle;
   dominant-baseline: middle;
 }

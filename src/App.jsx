@@ -12,9 +12,7 @@ import ErrorPage from "../Components/ErrorPage";
 import About from "../Components/About";
 
 
-
 function App() {
-
 
   const [isAnimationPlaying, setIsAnimationPlaying] = useState(true);
   
@@ -53,13 +51,11 @@ function App() {
 
 
 
-
-
   return (
     <>
       {isAnimationPlaying && (
         <svg className={`animation ${isAnimationPlaying ? "" : "active"}`} width="100%">
-          <text x="50%" y="50%">CryptOracle</text>
+          <text x="50%" y="50%">CryptoOracle</text>
         </svg>
       )}
       <div className={`fade-in ${isAnimationPlaying ? "" : "active"}`}>

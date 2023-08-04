@@ -8,7 +8,6 @@ import searchLight from "../assets/search_light.svg"
 const MainLayout = () => {
   const hamburgerRef = useRef(null); 
   const [isDarkMode, setIsDarkMode] = useState(false)
-  const [watchlist, setWatchList] = useState([])
   const [search,setSearch] = useState("")
   const [searchResults, setSearchResults] = useState([])
   const [lists, setlists] = useState([])
@@ -324,7 +323,7 @@ function openHamburger() {
         </header>
         
         <main>
-            <Outlet context={{isDarkMode,lists,watchlist,setWatchList}} />
+            <Outlet context={{isDarkMode,lists}} />
         </main>
         <footer>
 
