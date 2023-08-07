@@ -4,9 +4,11 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Outlet,NavLink,Link } from 'react-router-dom'
 import searchDark from "../assets/search_dark.svg"
 import searchLight from "../assets/search_light.svg"
+import {getCoins} from "./CoinsApi.jsx"
 
 const MainLayout = () => {
-  const hamburgerRef = useRef(null); 
+  const hamburgerRef = useRef(null);
+  const searchInput = useRef(null) 
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [search,setSearch] = useState("")
   const [searchResults, setSearchResults] = useState([])
@@ -152,33 +154,36 @@ function expandSearchBar() {
   } else {
       searchField.style.width = "100%"
       results.style.display = "flex"
+      searchInput.current.focus()
   }
 }
 
 useEffect(() => {
 
+
+  if(localStorage.getItem("coins")) {
+
+      setlists(JSON.parse(localStorage.getItem("coins")))
+
+    } else {
+
   const fetchAllCoins = async() => {
 
-    try {
-      const response = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&sparkline=false&locale=en", {
-        method : "GET",
-        headers : {
-          accept : "application/json"
+    const [coins1,coins2,coins3] = await Promise.all([getCoins(1),getCoins(2),getCoins(3)])
+        
+        const allCoins = [...coins1,...coins2,...coins3]
+
+        if(coins1.message) {
+          console.log(coins1.message)
+
+        } else {
+
+          localStorage.setItem("coins", JSON.stringify(allCoins))
+          setlists(allCoins)
         }
-      })
-      const allCoins = await response.json()
-      setlists(allCoins)
-
-    } catch (error) {
-      console.log(error.message)
+      }
+      fetchAllCoins()
     }
-  }
-  const timeoutID = setTimeout(() => {
-        fetchAllCoins()
-  },5000)
-
-  return () => clearTimeout(timeoutID)
-
 },[])
 
 
@@ -203,7 +208,6 @@ const mobileMenu = document.querySelector(".nav_links_container");
 const hamburger = document.getElementById('hamburger');
 
 useEffect(() => {
-  // Check if the hamburgerRef.current exists before accessing its style
   if (hamburgerRef.current) {
     if (isDarkMode === false) {
       hamburgerRef.current.style.stroke = "white";
@@ -276,6 +280,7 @@ function openHamburger() {
                         placeholder='Search cryptocurrencies...'
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
+                        ref={searchInput}
                     />
                     <div className='search_list'>
                       {searchResults.map(eachCoin => {

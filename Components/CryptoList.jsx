@@ -49,7 +49,7 @@ useEffect(() => {
 
         const data = await response.json();
 
-        if (isMounted) {
+        if (isMounted) { /* only sets state if the user is in the componenet */
           setTrendingCoins(data.coins.slice(0, 3));
           localStorage.setItem(
             "trendingCoinslocal",
@@ -157,7 +157,7 @@ useEffect(() => {
   }, [lists]);
 
 
-
+/* PAGINATION */
 const lastIndex = coinsPerPage * currentPage
 const firstIndex = lastIndex - coinsPerPage 
 const currentCoins = finalList.slice(firstIndex, lastIndex) 
