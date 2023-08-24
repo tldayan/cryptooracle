@@ -187,7 +187,7 @@ header {
   gap: 20px;
   color: var(--basefaded);
   font-size: 0.7rem;
-  padding: 20px 10px;
+  padding: 25px 10px;
   font-family: Inter,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,Helvetica,Arial,sans-serif;
   white-space: nowrap;
 }
@@ -288,12 +288,13 @@ footer {
 }
 
 .login_button {
-  padding: 5px 10px;
+  padding: 7px 15px;
   background-color: transparent;
   border: 1px solid var(--accent);
   color: var(--accent);
   border-radius: 2px;
   cursor: pointer;
+  transition: all 0.3s;
 }
 
 .signup_button:hover {
@@ -302,10 +303,13 @@ footer {
 
 .login_button:hover {
   opacity: 0.9;
+  border: 1px solid black;
+  background-color: black;
+  color: rgb(255, 255, 255);
 }
 
 .signup_button {
-  padding: 5px 10px;
+  padding: 7px 15px;
   background-color: var(--accent);
   border: 1px solid var(--accent);
   color: white;
@@ -404,6 +408,7 @@ footer {
     padding: 3px 5px;
     border-radius: 2px;
     font-size: clamp(0.4rem, 5vw, 1rem);
+    transition: all 0.3s;
   }
 
 .nav_links.active {

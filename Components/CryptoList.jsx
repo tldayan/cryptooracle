@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useCallback } from 'react'
 import flame from "../assets/flame.png"
 import flameDark from "../assets/flame_dark.png"
 import building from "../assets/building.png"
@@ -10,13 +10,12 @@ import miniStar from "../assets/star-solid.svg"
 import ListStar from "../assets/miniListStar.png"
 import ListStarFilled from "../assets/miniListStar_filled.png"
 import {useSelector} from "react-redux"
-
 import {useDispatch} from "react-redux"
 import {watchlistActions} from "./store/Watchlist-Slice"
-
 import { useEffect, useState} from 'react'
 import {Link, useOutletContext} from "react-router-dom"
 import GaugeChart from './GaugeChart'
+
 
 const CryptoList = () => {
 
@@ -224,6 +223,10 @@ useEffect(() => {
     dispatch(watchlistActions.handleWatchlist(selectedCurrency.toLowerCase()))
   }
 
+  const scrollToList = useCallback((e) => {
+      e.preventDefault()
+      window.scrollTo(0,430)
+  },[])
   
 
 
@@ -243,10 +246,7 @@ useEffect(() => {
                     return <Link to={`/currencies/${eachCoin.item.id}`} className='trending_line' key={index+ 1}><span className='numbering'>{index + 1}</span> <img loading='lazy' className='trending_icons' src={eachCoin.item.small} alt="" /><p className='trending_coins'>{(eachCoin.item.id).charAt(0).toUpperCase() + eachCoin.item.id.slice(1)}</p></Link>
                 })}
             </ul>
-            <Link onClick={(e) => {
-              e.preventDefault()
-              window.scrollTo(0,430)
-            } } className='more_button'>View all</Link>
+            <Link onClick={(e) => scrollToList(e)} className='more_button'>View all</Link>
         </div>
         <div className='trending_container'>
             <h3 className='highlights_titles'><img loading='lazy' className='highlight_icons' src={isDarkMode ? buildingDark : building} alt="" /> Top Exchanges <span className='live'>Live</span></h3>
@@ -321,9 +321,7 @@ useEffect(() => {
               <td className={eachlist.price_change_percentage_24h && eachlist.price_change_percentage_24h < 0 ? "red" : "green"}><span dangerouslySetInnerHTML={{ __html: eachlist.price_change_percentage_24h < 0 ? "&#8600;" : "&#8599;" }} /> {eachlist.price_change_percentage_24h && (eachlist.price_change_percentage_24h).toFixed(2)} %</td>
               <td>${eachlist.market_cap.toLocaleString()}</td>
               <td className='coin_volume'>${eachlist.total_volume.toLocaleString()}{' '}<span className='coin_amount'>{(eachlist.total_volume / eachlist?.current_price).toLocaleString(undefined, {maximumFractionDigits: 0,})}{' '}{eachlist.symbol.toUpperCase()}</span></td>
-
               <td className='circ_supply'>{eachlist.circulating_supply.toLocaleString()} <span className='faded_text'>{(eachlist.symbol).toUpperCase()}</span> {eachlist.max_supply ? <div className='bar_container'><div className='bar' style={{width : (100 / (eachlist.max_supply / eachlist.circulating_supply)) + `%`}}></div></div> : null}</td>
-
             </tr>
           })}
           </tbody>

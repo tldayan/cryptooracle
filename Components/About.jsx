@@ -11,13 +11,14 @@ export default function About() {
       <h2 className='about_title'>About</h2>
       <p>Welcome to CryptoOracle, your ultimate destination for comprehensive cryptocurrency information. Our platform caters to enthusiasts, traders, and investors, empowering them with the knowledge and tools necessary to navigate the ever-evolving market with confidence. To ensure accuracy, we rely on the trusted CoinGecko API for real-time updates on prices, market capitalizations, and trading volumes of thousands of cryptocurrencies. Visualizing market trends is made easy with our integration of TradingView charts, renowned for their user-friendly interface and robust charting tools. Join us at CryptoOracle and stay ahead with the latest insights and interactive resources for the fascinating world of cryptocurrencies.</p>
     </div>
-    <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+
+
+  <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
     <summary itemprop="name">What is CrptoOracle?</summary>
       <div class="details-expanded" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <p>CryptoOracle is a one-stop destination for all your cryptocurrency needs. It is a comprehensive platform that caters to cryptocurrency enthusiasts, traders, and investors alike</p>
     </div>
   </details>
-  
   <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
     <summary itemprop="name">How does CryptoOracle work?</summary>
     <div class="details-expanded" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
