@@ -15,6 +15,7 @@ import {watchlistActions} from "./store/Watchlist-Slice"
 import { useEffect, useState} from 'react'
 import {Link, useOutletContext} from "react-router-dom"
 import GaugeChart from './GaugeChart'
+import CurrencyModal from './CurrencyModal'
 
 
 const CryptoList = () => {
@@ -28,6 +29,11 @@ const CryptoList = () => {
   const [trendingCoins, setTrendingCoins] = useState([])
   const [exchanges,setExchanges] = useState([])
   const [finalList, setFinalList] = useState([])
+  const [currencies] = useState(["USD,AED"])
+  const [selectedCurrency,setSelectedCurrency] = useState("USD")
+  const [currencyMultiplier, setCurrencyMultiplier] = useState(1)
+  const [isSelectingCurrency, setIsSelectingCurrency] = useState(false)
+  const [settingCurrency,setSettingCurrency] = useState(true)
 
 /* FETCH TRENDING COINS */
 useEffect(() => {
@@ -44,7 +50,7 @@ useEffect(() => {
               accept: "application/json",
             },
           }
-        );
+        ); 
 
         const data = await response.json();
 
@@ -146,6 +152,7 @@ useEffect(() => {
   return () => {
     isMounted = false;
   };
+  
 }, [lists]); 
 
 
@@ -228,14 +235,59 @@ useEffect(() => {
       window.scrollTo(0,430)
   },[])
   
+  const darkOverlay = document.querySelector(".dark_overlay")
+  const CurrencyModalElement = document.querySelector(".currency_modal")
 
+  function handleCurrencySwitch() {
+    CurrencyModalElement.classList.add("active")  
+    
+    darkOverlay.style.visibility = "visible"
+  }
+
+
+  useEffect( () => {
+
+    const fetchCurrencyMultiplier = async() => {
+
+      try {
+
+      const response = await fetch(`https://api.api-ninjas.com/v1/convertcurrency?have=USD&want=${selectedCurrency ? selectedCurrency : "USD"}&amount=${1}`,{
+        method : "GET",  
+        headers : {
+          Authorization : "Bearer NMo6TT6RgMzjwbrE8PmRcw==3Mh19h3fvocH8y8i"
+        }})
+
+      const DATA = await response.json()
+
+      const multiplier = DATA.new_amount
+      setCurrencyMultiplier(multiplier)
+
+    } catch (error) {
+      console.log(error.message)
+    }
+   }
+   
+   fetchCurrencyMultiplier()
+   setSettingCurrency(true)
+   
+   const updatedCurrencyLoadTimer = setTimeout(() => {
+    setSettingCurrency(false)
+   },1800)
+
+   return () => clearTimeout(updatedCurrencyLoadTimer)
+   
+  },[selectedCurrency])
+
+ 
+  
 
   return (
     <div className="cryptolist_route">
     <div className='highlights_container'>
-            <h1 className='highlights_title'>Today's Cryptocurrency Highlights</h1>
-            <p className='highlights_info'>The global crypto market cap is {globalMcap}, a <span className={isPositive ? "green" : "red"}>{(globalMcapPercent).toFixed(2)}%</span> {isPositive ? "increase" : "decrease"} over the last day.</p>
-        </div>
+        <h1 className='highlights_title'>Today's Cryptocurrency Highlights</h1>
+        <p className='highlights_info'>The global crypto market cap is {globalMcap}, a <span className={isPositive ? "green" : "red"}>{(globalMcapPercent).toFixed(2)}%</span> {isPositive ? "increase" : "decrease"} over the last day.</p>
+    </div>
+
     
     <div className='main_highlights_container'>
         <div className='trending_container'>
@@ -264,20 +316,27 @@ useEffect(() => {
             
         </div>
     </div>
-
+      <CurrencyModal isSelectingCurrency={isSelectingCurrency} setIsSelectingCurrency={setIsSelectingCurrency}  selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />
     <div className="list_actions">
       <div className="main_sort_container">
 
-        <Link to="watchlist" className="watchlist_btn"><img loading='lazy' className='mini_star' src={miniStar} alt="" />Watchlist</Link>
+        <Link to="watchlist" className="watchlist_btn">
+          <img loading='lazy' className='mini_star' src={miniStar} alt="" />
+          Watchlist
+        </Link>
+
+        <div className="currency_container">
+          <button onClick={handleCurrencySwitch} className='currency_btn'>Currency: {selectedCurrency}</button>
+        </div>
 
         <div className="main_rows_container">
-        <button onClick={openRowsContainer} className='show_rows_btn'>Show Rows: {coinsPerPage} &#9660;</button>
-        <ul className='rows_container hide'>
-          <li><button onClick={() => setCoinsPerPage(20)} className='rows_buttons'>20</button></li>
-          <li><button onClick={() => setCoinsPerPage(40)} className='rows_buttons'>40</button></li>
-          <li><button onClick={() => setCoinsPerPage(60)} className='rows_buttons'>60</button></li>
-        </ul>
-         </div>
+          <button onClick={openRowsContainer} className='show_rows_btn'>Show Rows: {coinsPerPage} &#9660;</button>
+          <ul className='rows_container hide'>
+            <li><button onClick={() => setCoinsPerPage(20)} className='rows_buttons'>20</button></li>
+            <li><button onClick={() => setCoinsPerPage(40)} className='rows_buttons'>40</button></li>
+            <li><button onClick={() => setCoinsPerPage(60)} className='rows_buttons'>60</button></li>
+          </ul>
+        </div>
         
         <div className="sort_main_container">
         <button onClick={openSortContainer} className='sort_button'>Sort</button>
@@ -294,7 +353,7 @@ useEffect(() => {
       </div>
     </div>           
     <div className='crypto_list_container'>
-        {currentCoins.length ? <table>
+        {currentCoins.length && !settingCurrency ? <table>
           <thead>
           <tr>
             <th><img className='list_star' src={ListStarFilled} alt="" /></th>
@@ -315,19 +374,19 @@ useEffect(() => {
               <td><button className='watchlist_star_btn' onClick={() => addToWatchlist(eachlist.id)}><img className='list_star' src={watchlist.includes(eachlist.id.toLowerCase()) ? ListStarFilled : ListStar} alt="" /></button></td>
               <td>{eachlist.market_cap_rank}</td>
               <td className='name' ><div className='name_container'><img loading='lazy' className='trending_icons' src={eachlist.image} alt="" /><Link className='name' to={`/currencies/${eachlist.id}`}>{eachlist.name}</Link><span className='faded_text'>{(eachlist.symbol).toUpperCase()}</span></div></td>
-              <td>${eachlist?.current_price.toLocaleString()}</td>
-              <td>{eachlist.low_24h && eachlist.low_24h.toLocaleString()}</td>
-              <td>{eachlist.high_24h && eachlist.high_24h.toLocaleString()}</td>
+              <td><span className='currency_symbol'>{selectedCurrency}</span>{(currencyMultiplier * eachlist?.current_price).toLocaleString()}</td>
+              <td><span className='currency_symbol'>{selectedCurrency}</span>{(currencyMultiplier * eachlist?.low_24h).toLocaleString()}</td>
+              <td><span className='currency_symbol'>{selectedCurrency}</span>{(currencyMultiplier * eachlist?.high_24h).toLocaleString()}</td>
               <td className={eachlist.price_change_percentage_24h && eachlist.price_change_percentage_24h < 0 ? "red" : "green"}><span dangerouslySetInnerHTML={{ __html: eachlist.price_change_percentage_24h < 0 ? "&#8600;" : "&#8599;" }} /> {eachlist.price_change_percentage_24h && (eachlist.price_change_percentage_24h).toFixed(2)} %</td>
-              <td>${eachlist.market_cap.toLocaleString()}</td>
-              <td className='coin_volume'>${eachlist.total_volume.toLocaleString()}{' '}<span className='coin_amount'>{(eachlist.total_volume / eachlist?.current_price).toLocaleString(undefined, {maximumFractionDigits: 0,})}{' '}{eachlist.symbol.toUpperCase()}</span></td>
+              <td><span className='currency_symbol'>{selectedCurrency}</span>{Number((currencyMultiplier * eachlist.market_cap).toFixed()).toLocaleString()}</td>
+              <td className='coin_volume'><span className='currency_symbol'>{selectedCurrency}</span>{eachlist.total_volume.toLocaleString()}{' '}<span className='coin_amount'>{(eachlist.total_volume / eachlist?.current_price).toLocaleString(undefined, {maximumFractionDigits: 0,})}{' '}{eachlist.symbol.toUpperCase()}</span></td>
               <td className='circ_supply'>{eachlist.circulating_supply.toLocaleString()} <span className='faded_text'>{(eachlist.symbol).toUpperCase()}</span> {eachlist.max_supply ? <div className='bar_container'><div className='bar' style={{width : (100 / (eachlist.max_supply / eachlist.circulating_supply)) + `%`}}></div></div> : null}</td>
             </tr>
           })}
           </tbody>
         </table> : <div className="load_animation"></div>}
     </div>
-    <div className="pagination_container">
+    {!settingCurrency && <div className="pagination_container">
         <p className="pagination_info">
           Results: {`${firstIndex + 1}`} - {`${lastIndex}`} of {finalList.length}
         </p>
@@ -372,7 +431,7 @@ useEffect(() => {
         <p className="pagination_info">
           Page: {`${currentPage}`} of {`${numberOfPages.length}`}
         </p>
-      </div>
+      </div>}
     </div>
   )
 }
