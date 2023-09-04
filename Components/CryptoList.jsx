@@ -16,6 +16,8 @@ import { useEffect, useState} from 'react'
 import {Link, useOutletContext} from "react-router-dom"
 import GaugeChart from './GaugeChart'
 import CurrencyModal from './CurrencyModal'
+import TableSkeleton from './TableSkeleton'
+import TablePagination from './TablePagination'
 
 
 const CryptoList = () => {
@@ -29,11 +31,11 @@ const CryptoList = () => {
   const [trendingCoins, setTrendingCoins] = useState([])
   const [exchanges,setExchanges] = useState([])
   const [finalList, setFinalList] = useState([])
-  const [currencies] = useState(["USD,AED"])
   const [selectedCurrency,setSelectedCurrency] = useState("USD")
   const [currencyMultiplier, setCurrencyMultiplier] = useState(1)
   const [isSelectingCurrency, setIsSelectingCurrency] = useState(false)
   const [settingCurrency,setSettingCurrency] = useState(true)
+  const [sortOption,setSortOption] = useState("")
 
 /* FETCH TRENDING COINS */
 useEffect(() => {
@@ -91,8 +93,7 @@ useEffect(() => {
             headers: {
               accept: "application/json",
             },
-          }
-        );
+          });
 
         const exchanges = await response.json();
 
@@ -155,9 +156,6 @@ useEffect(() => {
   
 }, [lists]); 
 
-
-
-
   useEffect(() => {
     setFinalList(lists);
   }, [lists]);
@@ -167,7 +165,6 @@ useEffect(() => {
 const lastIndex = coinsPerPage * currentPage
 const firstIndex = lastIndex - coinsPerPage 
 const currentCoins = finalList.slice(firstIndex, lastIndex) 
-
 
 
 const numberOfPages = []
@@ -187,7 +184,6 @@ const numberOfPages = []
   };
 
   const { startPage, endPage } = calculatePageRange();
-
 
 
   const [sortContainer, setSortContainer] = useState(null);
@@ -210,7 +206,7 @@ useEffect(() => {
 useEffect(() => {
   if(sortContainer) {
     sortContainer.classList.add("hide")
-  }
+}
 },[finalList])
 
 
@@ -221,7 +217,6 @@ useEffect(() => {
   function openRowsContainer() {
     rowsContainer.classList.toggle("hide")
   }
-
 
   const dispatch = useDispatch()
   const watchlist = useSelector((state) => state.watchlist.watchlist)
@@ -240,7 +235,6 @@ useEffect(() => {
 
   function handleCurrencySwitch() {
     CurrencyModalElement.classList.add("active")  
-    
     darkOverlay.style.visibility = "visible"
   }
 
@@ -250,7 +244,6 @@ useEffect(() => {
     const fetchCurrencyMultiplier = async() => {
 
       try {
-
       const response = await fetch(`https://api.api-ninjas.com/v1/convertcurrency?have=USD&want=${selectedCurrency ? selectedCurrency : "USD"}&amount=${1}`,{
         method : "GET",  
         headers : {
@@ -279,7 +272,20 @@ useEffect(() => {
   },[selectedCurrency])
 
  
-  
+  function handleSort(sortSelection) {
+    if(sortSelection === "Price &#9650;") {
+      setSortOption("Price &#9650;")
+    }else if(sortSelection === "Price &#9660;") {
+      setSortOption("Price &#9660;")
+    } else if(sortSelection === "Volume &#9650;") {
+      setSortOption("Volume &#9650;")
+    } else if(sortSelection === "Volume &#9660;") {
+      setSortOption("Volume &#9660;")
+    } else {
+      setSortOption("")
+    }
+  }
+
 
   return (
     <div className="cryptolist_route">
@@ -287,11 +293,9 @@ useEffect(() => {
         <h1 className='highlights_title'>Today's Cryptocurrency Highlights</h1>
         <p className='highlights_info'>The global crypto market cap is {globalMcap}, a <span className={isPositive ? "green" : "red"}>{(globalMcapPercent).toFixed(2)}%</span> {isPositive ? "increase" : "decrease"} over the last day.</p>
     </div>
-
     
     <div className='main_highlights_container'>
         <div className='trending_container'>
-          
             <h3 className='highlights_titles'><img loading='lazy' className='highlight_icons' src={isDarkMode ? flameDark : flame} alt="" /> Trending <span className='live'>Live</span></h3>
             <ul className='trending_list'>
                 {trendingCoins.map((eachCoin,index) => {
@@ -301,25 +305,22 @@ useEffect(() => {
             <Link onClick={(e) => scrollToList(e)} className='more_button'>View all</Link>
         </div>
         <div className='trending_container'>
-            <h3 className='highlights_titles'><img loading='lazy' className='highlight_icons' src={isDarkMode ? buildingDark : building} alt="" /> Top Exchanges <span className='live'>Live</span></h3>
-            <ul className='trending_list'>
-                {exchanges.map((eachexchange,index) => {
-                    return <li className='trending_line' key={index+ 1}><span className='numbering'>{index + 1}</span> <img loading='lazy' className='trending_icons' src={eachexchange.image} alt="" /><p className='trending_exchanges'>{eachexchange.name}</p></li>
-                })}
-            </ul>
-            <Link to="exchanges" className='more_button'>More &#x2192;</Link>
+          <h3 className='highlights_titles'><img loading='lazy' className='highlight_icons' src={isDarkMode ? buildingDark : building} alt="" /> Top Exchanges <span className='live'>Live</span></h3>
+          <ul className='trending_list'>
+            {exchanges.map((eachexchange,index) => {
+              return <li className='trending_line' key={index+ 1}><span className='numbering'>{index + 1}</span> <img loading='lazy' className='trending_icons' src={eachexchange.image} alt="" /><p className='trending_exchanges'>{eachexchange.name}</p></li>
+            })}
+          </ul>
+          <Link to="exchanges" className='more_button'>More &#x2192;</Link>
         </div>
         <div className='trending_container'>
-          
-            <h3 className='highlights_titles'><img loading='lazy' className='highlight_icons' src={isDarkMode ? gaugeDark : gauge} alt="" /> Fear & Greed Index <span className='index_tooltip_container'><span className='index_info_icon'>&#9432;</span><p className='index_info'>When the value is closer to 0, the market is in Extreme Fear, and investors have over-sold irrationally. When the value is closer to 100, the market is in Extreme Greed, indicating a likely market correction.</p></span><span className='live'>Live</span></h3>
-            <GaugeChart />
-            
+          <h3 className='highlights_titles'><img loading='lazy' className='highlight_icons' src={isDarkMode ? gaugeDark : gauge} alt="" /> Fear & Greed Index <span className='index_tooltip_container'><span className='index_info_icon'>&#9432;</span><p className='index_info'>When the value is closer to 0, the market is in Extreme Fear, and investors have over-sold irrationally. When the value is closer to 100, the market is in Extreme Greed, indicating a likely market correction.</p></span><span className='live'>Live</span></h3>
+          <GaugeChart />
         </div>
     </div>
       <CurrencyModal isSelectingCurrency={isSelectingCurrency} setIsSelectingCurrency={setIsSelectingCurrency}  selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />
     <div className="list_actions">
       <div className="main_sort_container">
-
         <Link to="watchlist" className="watchlist_btn">
           <img loading='lazy' className='mini_star' src={miniStar} alt="" />
           Watchlist
@@ -339,98 +340,66 @@ useEffect(() => {
         </div>
         
         <div className="sort_main_container">
-        <button onClick={openSortContainer} className='sort_button'>Sort</button>
-        <ul className='sort_container hide'>
-          <li><button onClick={() => setFinalList([...finalList].sort((a,b) => b.current_price - a.current_price))} className='sort_buttons'>Price &#9650;</button></li>
-          <li><button onClick={() => setFinalList([...finalList].sort((a,b) => a.current_price - b.current_price))} className='sort_buttons'>Price &#9660;</button></li>
-          <li><button onClick={() => setFinalList([...finalList].sort((a,b) => b.total_volume - a.total_volume))} className='sort_buttons'>Volume &#9650;</button></li>
-          <li><button onClick={() => setFinalList([...finalList].sort((a,b) => a.total_volume - b.total_volume))} className='sort_buttons'>Volume &#9660;</button></li>
-          <li><button onClick={() => setFinalList([...finalList].sort((a,b) => b.low_24h - a.low_24h))} className='sort_buttons'>24h &#9650;</button></li>
-          <li><button onClick={() => setFinalList([...finalList].sort((a,b) => a.high_24h - b.high_24h))} className='sort_buttons'>24h &#9660;</button></li>
-          <li><button onClick={() => setFinalList([...finalList].sort((a,b) => a.market_cap_rank - b.market_cap_rank))} className='sort_buttons'>Reset</button></li>
-        </ul>
-      </div>
+          <button onClick={openSortContainer} className='sort_button'>Sort</button>
+          <ul className='sort_container hide'>
+            <li><button onClick={() => {setFinalList([...finalList].sort((a,b) => b.current_price - a.current_price)); handleSort("Price &#9650;")}} className={`sort_buttons ${sortOption === "Price &#9650;" && "active"}`}>Price &#9650;</button></li>
+            <li><button onClick={() => {setFinalList([...finalList].sort((a,b) => a.current_price - b.current_price)); handleSort("Price &#9660;")}} className={`sort_buttons ${sortOption === "Price &#9660;" && "active"}`}>Price &#9660;</button></li>
+            <li><button onClick={() => {setFinalList([...finalList].sort((a,b) => b.total_volume - a.total_volume));handleSort("Volume &#9650;")}} className={`sort_buttons ${sortOption === "Volume &#9650;" && "active"}`}>Volume &#9650;</button></li>
+            <li><button onClick={() => {setFinalList([...finalList].sort((a,b) => a.total_volume - b.total_volume));handleSort("Volume &#9660;")}} className={`sort_buttons ${sortOption === "Volume &#9660;" && "active"}`}>Volume &#9660;</button></li>
+            <li><button onClick={() => {setFinalList([...finalList].sort((a,b) => a.market_cap_rank - b.market_cap_rank));handleSort("Price")}} className='sort_buttons'>Reset</button></li>
+          </ul>
+        </div>
       </div>
     </div>           
     <div className='crypto_list_container'>
-        {currentCoins.length && !settingCurrency ? <table>
-          <thead>
-          <tr>
-            <th><img className='list_star' src={ListStarFilled} alt="" /></th>
-            <th>#</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Low (24h)</th>
-            <th>High (24h)</th>
-            <th>24h %</th>
-            <th>Market Cap <span className='mcap_tooltip_container'><span className='mcap_table_info_icon'>&#9432;</span><p className='mcap_table_info'>When the value is closer to 0, the market is in Extreme Fear, and investors have over-sold irrationally. When the value is closer to 100, the market is in Extreme Greed, indicating a likely market correction.</p></span></th>
-            <th className='volume_title'>Volume <span className='volume_tooltip_container'><span className='volume_table_info_icon'>&#9432;</span><p className='volume_table_info'>A measure of how much of a cryptocurrency was traded in the last 24 hours.</p></span></th>
-            <th>Circulating Supply <span className='circ_supply_tooltip_container'><span className='circsupply_table_info_icon'>&#9432;</span><p className='circsupply_table_info'>When the value is closer to 0, the market is in Extreme Fear, and investors have over-sold irrationally. When the value is closer to 100, the market is in Extreme Greed, indicating a likely market correction.</p></span></th>
-          </tr>
-          </thead>
-          <tbody>
-          {currentCoins.map(eachlist => {
-            return <tr key={eachlist.market_cap_rank}>
+  {currentCoins.length && !settingCurrency ? (
+    <table>
+      <thead>
+        <tr>
+          <th><img className='list_star' src={ListStarFilled} alt="" /></th>
+          <th>#</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Low (24h)</th>
+          <th>High (24h)</th>
+          <th>24h %</th>
+          <th>Market Cap <span className='mcap_tooltip_container'><span className='mcap_table_info_icon'>&#9432;</span><p className='mcap_table_info'>When the value is closer to 0, the market is in Extreme Fear, and investors have over-sold irrationally. When the value is closer to 100, the market is in Extreme Greed, indicating a likely market correction.</p></span></th>
+          <th className='volume_title'>Volume <span className='volume_tooltip_container'><span className='volume_table_info_icon'>&#9432;</span><p className='volume_table_info'>A measure of how much of a cryptocurrency was traded in the last 24 hours.</p></span></th>
+          <th>Circulating Supply <span className='circ_supply_tooltip_container'><span className='circsupply_table_info_icon'>&#9432;</span><p className='circsupply_table_info'>When the value is closer to 0, the market is in Extreme Fear, and investors have over-sold irrationally. When the value is closer to 100, the market is in Extreme Greed, indicating a likely market correction.</p></span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {currentCoins.map(eachlist => {
+          return (
+            <tr key={eachlist.market_cap_rank}>
               <td><button className='watchlist_star_btn' onClick={() => addToWatchlist(eachlist.id)}><img className='list_star' src={watchlist.includes(eachlist.id.toLowerCase()) ? ListStarFilled : ListStar} alt="" /></button></td>
               <td>{eachlist.market_cap_rank}</td>
-              <td className='name' ><div className='name_container'><img loading='lazy' className='trending_icons' src={eachlist.image} alt="" /><Link className='name' to={`/currencies/${eachlist.id}`}>{eachlist.name}</Link><span className='faded_text'>{(eachlist.symbol).toUpperCase()}</span></div></td>
+              <td className='name'><div className='name_container'><img loading='lazy' className='trending_icons' src={eachlist.image} alt="" /><abbr title={`${eachlist.name}`}><Link className='name' to={`/currencies/${eachlist.id}`}>{eachlist.name.length > 10 ? eachlist.name.slice(0, 10) + "..." : eachlist.name}</Link></abbr><span className='faded_text'>{(eachlist.symbol).toUpperCase()}</span></div></td>
               <td><span className='currency_symbol'>{selectedCurrency}</span>{(currencyMultiplier * eachlist?.current_price).toLocaleString()}</td>
               <td><span className='currency_symbol'>{selectedCurrency}</span>{(currencyMultiplier * eachlist?.low_24h).toLocaleString()}</td>
               <td><span className='currency_symbol'>{selectedCurrency}</span>{(currencyMultiplier * eachlist?.high_24h).toLocaleString()}</td>
-              <td className={eachlist.price_change_percentage_24h && eachlist.price_change_percentage_24h < 0 ? "red" : "green"}><span dangerouslySetInnerHTML={{ __html: eachlist.price_change_percentage_24h < 0 ? "&#8600;" : "&#8599;" }} /> {eachlist.price_change_percentage_24h && (eachlist.price_change_percentage_24h).toFixed(2)} %</td>
+              <td className={eachlist.price_change_percentage_24h && eachlist.price_change_percentage_24h < 0 ? "red" : "green"}>
+                <span dangerouslySetInnerHTML={{ __html: eachlist.price_change_percentage_24h < 0 ? "&#8600;" : "&#8599;" }} /> {eachlist.price_change_percentage_24h && (eachlist.price_change_percentage_24h).toFixed(2)} %
+              </td>
               <td><span className='currency_symbol'>{selectedCurrency}</span>{Number((currencyMultiplier * eachlist.market_cap).toFixed()).toLocaleString()}</td>
-              <td className='coin_volume'><span className='currency_symbol'>{selectedCurrency}</span>{eachlist.total_volume.toLocaleString()}{' '}<span className='coin_amount'>{(eachlist.total_volume / eachlist?.current_price).toLocaleString(undefined, {maximumFractionDigits: 0,})}{' '}{eachlist.symbol.toUpperCase()}</span></td>
-              <td className='circ_supply'>{eachlist.circulating_supply.toLocaleString()} <span className='faded_text'>{(eachlist.symbol).toUpperCase()}</span> {eachlist.max_supply ? <div className='bar_container'><div className='bar' style={{width : (100 / (eachlist.max_supply / eachlist.circulating_supply)) + `%`}}></div></div> : null}</td>
+              <td className='coin_volume'>
+                <span className='currency_symbol'>{selectedCurrency}</span>{eachlist.total_volume.toLocaleString()}{' '}
+                <span className='coin_amount'>{(eachlist.total_volume / eachlist?.current_price).toLocaleString(undefined, { maximumFractionDigits: 0, })}{' '}{eachlist.symbol.toUpperCase()}</span>
+              </td>
+              <td className='circ_supply'>{eachlist.circulating_supply.toLocaleString()} <span className='faded_text'>{(eachlist.symbol).toUpperCase()}</span> {eachlist.max_supply ? <div className='bar_container'><div className='bar' style={{ width: (100 / (eachlist.max_supply / eachlist.circulating_supply)) + `%` }}></div></div> : null}</td>
             </tr>
-          })}
-          </tbody>
-        </table> : <div className="load_animation"></div>}
-    </div>
+          );
+        })}
+      </tbody>
+    </table>
+  ) : (
+    <TableSkeleton />
+  )}
+</div>
     {!settingCurrency && <div className="pagination_container">
-        <p className="pagination_info">
-          Results: {`${firstIndex + 1}`} - {`${lastIndex}`} of {finalList.length}
-        </p>
-
-        <div className="pagination">
-          {/* Previous Page Button */}
-          {currentPage > 1 && (
-            <Link
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-              className={`page_buttons`}
-            >
-              &laquo;
-            </Link>
-          )}
-
-          {/* Page Buttons */}
-          {numberOfPages.slice(startPage - 1, endPage).map((eachPage) => (
-            <Link
-              onClick={(e) => {
-                e.preventDefault()
-                setCurrentPage(eachPage)
-                window.scrollTo(0,430)
-              }}
-              className={`page_buttons ${currentPage === eachPage ? 'active' : null} `}
-              key={eachPage}
-            >
-              {eachPage}
-            </Link>
-          ))}
-
-          {/* Next Page Button */}
-          {currentPage < numberOfPages.length && (
-            <Link
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              className={`page_buttons`}
-            >
-              &raquo;
-            </Link>
-          )}
-        </div>
-
-        <p className="pagination_info">
-          Page: {`${currentPage}`} of {`${numberOfPages.length}`}
-        </p>
+        <p className="pagination_info">Results: {`${firstIndex + 1}`} - {`${lastIndex}`} of {finalList.length}</p>
+        <TablePagination currentPage={currentPage} setCurrentPage={setCurrentPage} numberOfPages={numberOfPages} startPage={startPage} endPage={endPage} />
+        <p className="pagination_info">Page: {`${currentPage}`} of {`${numberOfPages.length}`}</p>
       </div>}
     </div>
   )
