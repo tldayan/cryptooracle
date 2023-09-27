@@ -1,8 +1,8 @@
 import React from 'react';
 
-const currencies = ["AED", "USD", "BHD", "GBP", "OMR", "JOD", "AUD", "THB", "KWD", "SEK", "NZD", "CHF", "SAR", "CAD", "QAR", "DKK"];
+const currencies = ["AED", "USD", "EUR", "GBP", "AUD", "BHD", "OMR", "THB", "KWD", "SEK", "NZD", "CHF", "SAR", "CAD", "QAR", "DKK"];
 
-export default function CurrencyModal({ setSelectedCurrency, closeModal, selectedCurrency }) {
+export default function CurrencyModal({selectingCurrency,setIsSelectingCurrency,setSelectedCurrency, closeModal, selectedCurrency }) {
   
   
   const CurrencyModalElement = document.querySelector(".currency_modal")
@@ -11,6 +11,7 @@ export default function CurrencyModal({ setSelectedCurrency, closeModal, selecte
   function closeModal() {
       CurrencyModalElement.classList.remove("active")
       darkOverlay.style.visibility = "hidden"
+      setIsSelectingCurrency(!selectingCurrency)
   }
   
   return (

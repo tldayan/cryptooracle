@@ -46,15 +46,15 @@
 }
 
 /* MAINSCROLL BAR */
-::-webkit-scrollbar {
+html::-webkit-scrollbar {
   width: 5px;
 }
 
-::-webkit-scrollbar-track {
+html::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+html::-webkit-scrollbar-thumb {
   background: var(--base);
   border-radius: 10px 0px 0px 10px;
 }
@@ -324,6 +324,11 @@ footer {
   overflow-y: scroll;
   transition: all 0.5s;
   z-index: 9999;
+  max-height: 0vh;
+}
+
+.search_list.active {
+  max-height: 50vh;
 }
 
 .search_list::-webkit-scrollbar {
@@ -331,11 +336,11 @@ footer {
 }
 
 .search_list::-webkit-scrollbar-thumb {
-  background: black;
+  background: rgb(255, 255, 255);
 }
 
 .search_list::-webkit-scrollbar-track {
-  background: white;
+  background: rgb(0, 0, 0);
 }
 
 .result {
@@ -949,7 +954,7 @@ h2 {
 
 .crypto_list_container {
   border: var(--container_border);
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
   background-color: var(--bgColor);
   box-shadow: var(--container_shadow);
   padding: 10px;
@@ -2251,6 +2256,9 @@ svg text {
     flex: 1;
     height: 13px;
     border-radius: 2px;
+  }
+  .crypto_list_container {
+    overflow-x: scroll;
   }
   .nav_links_container {
     display: flex;

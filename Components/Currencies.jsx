@@ -84,11 +84,9 @@ export default function Currencies() {
 
     return (
       <>
-          <Link to="/" className='back_button'>&#10094; Back to Home</Link>
+        <Link to="/" className='back_button'>&#10094; Back to Home</Link>
         <div className='currency_main_container'>
-          
             <div className="currency_info_container">
-                
                 <div className='currency_stats_container'>
                 <h4 className='currency_name'><img loading='lazy' className='trending_icons' src={currencyData["image"]?.thumb} alt="" />{(selectedCurrency).charAt(0)?.toUpperCase() + selectedCurrency.slice(1)} <span className='currency_faded_text'>{currencyData?.symbol?.toUpperCase()}</span></h4>
                     <p className='currency_description'>{currencyData.description?.en ? currencyData.description.en : <span className="load_animation"></span> }</p>

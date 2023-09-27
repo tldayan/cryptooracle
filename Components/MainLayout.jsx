@@ -7,6 +7,7 @@ import searchLight from "../assets/search_light.svg"
 import {getCoins} from "./CoinsApi.jsx"
 
 const MainLayout = () => {
+  const searchList = useRef(null)
   const hamburgerRef = useRef(null);
   const searchInput = useRef(null) 
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -191,9 +192,11 @@ useEffect(() => {
 
   if(search === "") {
     setSearchResults([])
+    searchList.current.classList.remove("active")
     return;
   }
   searchField.style.width = "100%"
+  searchList.current.classList.add("active")
   setSearchResults(lists.filter(eachCoin => (eachCoin.id).toLowerCase().includes(search.toLowerCase())))
 
 },[search])
@@ -282,7 +285,7 @@ function openHamburger() {
                         onChange={(e) => setSearch(e.target.value)}
                         ref={searchInput}
                     />
-                    <div className='search_list'>
+                    <div ref={searchList} className='search_list'>
                       {searchResults.map(eachCoin => {
                         return <Link onClick={closeResultList} to={`/currencies/${eachCoin.id}`} className='result' key={eachCoin.id}><img loading='lazy' className='trending_icons' src={eachCoin.image} alt="" />{(eachCoin.id).charAt(0)?.toUpperCase() + eachCoin.id.slice(1)}<span className='currency_faded_text'>{eachCoin?.symbol?.toUpperCase()}</span></Link>
                       })}

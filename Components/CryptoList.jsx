@@ -33,7 +33,7 @@ const CryptoList = () => {
   const [finalList, setFinalList] = useState([])
   const [selectedCurrency,setSelectedCurrency] = useState("USD")
   const [currencyMultiplier, setCurrencyMultiplier] = useState(1)
-  const [isSelectingCurrency, setIsSelectingCurrency] = useState(false)
+  const [isSelectingCurrency, setIsSelectingCurrency] = useState(true)
   const [settingCurrency,setSettingCurrency] = useState(true)
   const [sortOption,setSortOption] = useState("")
 
@@ -56,7 +56,7 @@ useEffect(() => {
 
         const data = await response.json();
 
-        if (isMounted) { /* only sets state if the user is in the componenet */
+        if (isMounted) { /* only sets state if the user is in the component */
           setTrendingCoins(data.coins.slice(0, 3));
           localStorage.setItem(
             "trendingCoinslocal",
@@ -117,6 +117,21 @@ useEffect(() => {
   
 }, []);
 
+
+
+useEffect(() => {
+
+  if(isSelectingCurrency === true) {
+    document.body.style.overflow = "auto"
+  } else {
+    document.body.style.overflow = "hidden"
+  }
+
+  return () => {
+    document.body.style.overflow = "auto";
+  };
+
+},[isSelectingCurrency])
 
 
 useEffect(() => {
@@ -236,6 +251,8 @@ useEffect(() => {
   function handleCurrencySwitch() {
     CurrencyModalElement.classList.add("active")  
     darkOverlay.style.visibility = "visible"
+    
+    setIsSelectingCurrency(!isSelectingCurrency)
   }
 
 
