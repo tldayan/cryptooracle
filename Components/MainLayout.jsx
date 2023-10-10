@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState, useRef } from 'react'
 import { Outlet,NavLink,Link } from 'react-router-dom'
-import searchDark from "../assets/search_dark.svg"
-import searchLight from "../assets/search_light.svg"
 import {getCoins} from "./CoinsApi.jsx"
 
 const MainLayout = () => {
@@ -80,7 +78,6 @@ const MainLayout = () => {
         };
     },[])
 
-    const signup = document.querySelector(".signup_button")
 
 const html = document.getElementById("htmlPage")
 html.classList.add("dark_mode")
@@ -121,8 +118,10 @@ function handleAuthOpen(e) {
 
   if(ClickedButton.innerText === "Login") {
     setIsLogin(true)
+    setIsSignUp(false)
   } else {
     setIsSignUp(true)
+    setIsLogin(false)
   }
 
       loginSignupContainer.style.opacity = 1
@@ -138,26 +137,12 @@ function handleAuthClose() {
       darkOverlay.style.visibility = "hidden"
       loginSignupContainer.style.opacity = 0
       loginSignupContainer.style.pointerEvents = "none"
-      setIsLogin(false)
-      setIsSignUp(false)
 }
 
 
-const results = document.querySelector(".search_list")
 const searchField = document.querySelector('.search_field');
 
-function expandSearchBar() {
-  let currentWidth = searchField.style.width
-  if (currentWidth === "100%" ) {
-      searchField.style.width = "0%"
-      results.style.display = "none"
 
-  } else {
-      searchField.style.width = "100%"
-      results.style.display = "flex"
-      searchInput.current.focus()
-  }
-}
 
 useEffect(() => {
 
@@ -203,7 +188,6 @@ useEffect(() => {
 
 function closeResultList() {
   setSearchResults([])
-  searchField.style.width = "0%"
 }
 
 /* HAMBURGER FUNCTIONALITY */
@@ -221,8 +205,6 @@ useEffect(() => {
 }, [isDarkMode]);
     
 function openHamburger() {
-
-    const navLinks = document.querySelector(".nav_links")
   
     hamburger.classList.toggle('open');
   
@@ -239,8 +221,6 @@ function openHamburger() {
     hamburger.classList.toggle("open")
     
   }
-  
-
 
 
   return (
@@ -290,7 +270,7 @@ function openHamburger() {
                         return <Link onClick={closeResultList} to={`/currencies/${eachCoin.id}`} className='result' key={eachCoin.id}><img loading='lazy' className='trending_icons' src={eachCoin.image} alt="" />{(eachCoin.id).charAt(0)?.toUpperCase() + eachCoin.id.slice(1)}<span className='currency_faded_text'>{eachCoin?.symbol?.toUpperCase()}</span></Link>
                       })}
                     </div>
-                    <img loading='lazy' className='search_icon' onClick={expandSearchBar} src={isDarkMode ? searchDark : searchLight} alt="" />
+                    
                 </div>
 
 
@@ -363,8 +343,7 @@ function openHamburger() {
 
           <p className="copyright">&copy; 2023 CryptoOracle. All rights reserved.</p>
         </footer>
-    
-        </div>
+    </div>
   )
 }
 

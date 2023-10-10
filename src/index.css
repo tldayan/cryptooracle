@@ -287,6 +287,9 @@ footer {
 }
 
 .search_container {
+  /* border: 1px solid white; */
+  border-radius: 5px;
+  background-color: #ffffff0f;
   width: 30%;
   margin-left: auto;
   display: flex;
@@ -295,11 +298,10 @@ footer {
 }
 
 .search_field {
-  /*   border: 2px solid white; */
   height: 30px;
-  width: 0%;
+  width: 100%;
   text-indent: 10px;
-  font-size: clamp(0.5rem, 3vw, 1rem);
+  font-size: clamp(0.5rem, 3vw, 0.9rem);
   border: none;
   outline: none;
   margin-left: auto;
@@ -307,7 +309,6 @@ footer {
   font-family: "Quicksand", sans-serif;
   background-color: transparent;
   color: var(--base);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.222);
 }
 
 /* SEARCH RESULTS STYLINGS */
@@ -386,12 +387,12 @@ footer {
 nav {
   display: flex;
   align-items: center;
-  /*    border: 1px solid white; */
   width: 97%;
   margin: 0 auto;
 }
 
 .nav_links_container {
+  margin-left: 10px;
   display: flex;
   gap: 10px;
 }
@@ -2261,6 +2262,7 @@ svg text {
     overflow-x: scroll;
   }
   .nav_links_container {
+    margin-left: 0px;
     display: flex;
     flex-direction: column;
     top: 0;
