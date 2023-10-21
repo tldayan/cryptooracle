@@ -1397,11 +1397,12 @@ abbr {
  border: var(--container_border);
   background-color: var(--bgColor);
   padding: 10px;
-  overflow-x: scroll;
+  overflow-x: hidden;
   box-shadow: var(--container_shadow);
   width: 90%;
   border-radius: 5px;
   margin: 15px auto 25px auto;
+  
 }
 
 .exchange_links {
@@ -2467,6 +2468,11 @@ svg text {
         gap: 20px;
       }
     }
+
+
+    .exchanges_list_container {
+      overflow-x: scroll; 
+     }
 
 
 }
