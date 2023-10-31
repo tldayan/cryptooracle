@@ -263,9 +263,7 @@ useEffect(() => {
       try {
       const response = await fetch(`https://api.api-ninjas.com/v1/convertcurrency?have=USD&want=${selectedCurrency ? selectedCurrency : "USD"}&amount=${1}`,{
         method : "GET",  
-        headers : {
-          Authorization : "Bearer NMo6TT6RgMzjwbrE8PmRcw==3Mh19h3fvocH8y8i"
-        }})
+        headers: { 'X-Api-Key': 'NMo6TT6RgMzjwbrE8PmRcw==3Mh19h3fvocH8y8i'},})
 
       const DATA = await response.json()
 
