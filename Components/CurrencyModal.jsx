@@ -1,6 +1,6 @@
 import React from 'react';
 
-const currencies = ["AED", "USD", "EUR", "GBP", "AUD", "BHD", "OMR", "THB", "KWD", "SEK", "NZD", "CHF", "SAR", "CAD", "QAR", "DKK"];
+const currencies = ["USD", "EUR", "GBP", "AUD", "BHD", "OMR", "THB", "KWD", "SEK", "NZD", "CHF", "SAR", "CAD", "QAR", "DKK"];
 
 export default function CurrencyModal({selectingCurrency,setIsSelectingCurrency,setSelectedCurrency, closeModal, selectedCurrency }) {
   

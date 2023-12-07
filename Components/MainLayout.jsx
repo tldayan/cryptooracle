@@ -347,5 +347,5 @@ function openHamburger() {
   )
 }
 
-const MemoMainLayout = React.memo(MainLayout)
+
 export default MainLayout
