@@ -14,7 +14,6 @@ import {useDispatch} from "react-redux"
 import {watchlistActions} from "./store/Watchlist-Slice"
 import { useEffect, useState} from 'react'
 import {Link, useOutletContext} from "react-router-dom"
-import GaugeChart from './GaugeChart'
 import CurrencyModal from './CurrencyModal'
 import TableSkeleton from './TableSkeleton'
 import TablePagination from './TablePagination'
