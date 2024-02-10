@@ -18,6 +18,7 @@ import GaugeChart from './GaugeChart'
 import CurrencyModal from './CurrencyModal'
 import TableSkeleton from './TableSkeleton'
 import TablePagination from './TablePagination'
+import GaugeMeter from './GaugeMeter'
 
 
 const CryptoList = () => {
@@ -330,7 +331,7 @@ useEffect(() => {
         </div>
         <div className='trending_container'>
           <h3 className='highlights_titles'><img loading='lazy' className='highlight_icons' src={isDarkMode ? gaugeDark : gauge} alt="" /> Fear & Greed Index <span className='index_tooltip_container'><span className='index_info_icon'>&#9432;</span><p className='index_info'>When the value is closer to 0, the market is in Extreme Fear, and investors have over-sold irrationally. When the value is closer to 100, the market is in Extreme Greed, indicating a likely market correction.</p></span><span className='live'>Live</span></h3>
-          <GaugeChart />
+          <GaugeMeter />
         </div>
     </div>
       <CurrencyModal isSelectingCurrency={isSelectingCurrency} setIsSelectingCurrency={setIsSelectingCurrency}  selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />

@@ -15,13 +15,20 @@ import About from "../Components/About";
 function App() {
 
   const [isAnimationPlaying, setIsAnimationPlaying] = useState(true);
+  const [animationPlayed] = useState(
+    sessionStorage.getItem("animationPlayed") || "false"
+  );
+
   
   useEffect(() => {
+    scrollTo(0, 0);
+
     const animationTimeout = setTimeout(() => {
       setIsAnimationPlaying(false);
+      sessionStorage.setItem("animationPlayed", "true");
     }, 5000);
 
-    return () => clearTimeout(animationTimeout)
+    return () => clearTimeout(animationTimeout);
   }, []);
 
   
@@ -42,10 +49,14 @@ function App() {
   );
 
   useEffect(() => {
-    if (isAnimationPlaying) {
-      document.body.style.overflow = "hidden";
+    if (animationPlayed === "false") {
+      if (isAnimationPlaying) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
     } else {
-      document.body.style.overflow = "auto";
+      return;
     }
   }, [isAnimationPlaying]);
 
@@ -53,12 +64,21 @@ function App() {
 
   return (
     <>
-      {isAnimationPlaying && (
-        <svg className={`animation ${isAnimationPlaying ? "" : "active"}`} width="100%">
-          <text x="50%" y="50%">CryptoOracle</text>
+      {animationPlayed === "false" && isAnimationPlaying && (
+        <svg
+          className={`animation ${isAnimationPlaying ? "" : "active"}`}
+          width="100%"
+        >
+          <text x="50%" y="50%">
+            CryptoOracle
+          </text>
         </svg>
       )}
-      <div className={`fade-in ${isAnimationPlaying ? "" : "active"}`}>
+      <div
+        className={`fade-in ${
+          animationPlayed === "false" && isAnimationPlaying ? "" : "active"
+        }`}
+      >
         <RouterProvider router={router} />
       </div>
     </>

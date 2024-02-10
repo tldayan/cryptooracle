@@ -25,7 +25,7 @@
   --currencystatsborder: 1px solid #333;
   --tabledataborder: 1px solid #3333337a;
   --filterbuttonsBgColor: rgba(69, 69, 69, 0.741);
-  --ministarColor: invert(1) ;
+  --ministarColor: invert(1);
 }
 
 #htmlPage.light_mode {
@@ -42,7 +42,7 @@
   --currencystatsborder: 1px solid rgba(152, 152, 152, 0.535);
   --tabledataborder: 1px solid rgba(199, 199, 199, 0.467);
   --filterbuttonsBgColor: rgb(225, 225, 225);
-  --ministarColor: invert(0) ;
+  --ministarColor: invert(0);
 }
 
 /* MAINSCROLL BAR */
@@ -458,7 +458,10 @@ nav {
 }
 
 /* TOOTIPS */
-.index_tooltip_container, .mcap_tooltip_container, .volume_tooltip_container, .circ_supply_tooltip_container {
+.index_tooltip_container,
+.mcap_tooltip_container,
+.volume_tooltip_container,
+.circ_supply_tooltip_container {
   position: relative;
   white-space: pre-wrap;
 }
@@ -563,7 +566,8 @@ nav {
 .index_info_icon,
 .mcap_table_info_icon,
 .volume_table_info_icon,
-.circsupply_table_info_icon, .mcap_info_icon,
+.circsupply_table_info_icon,
+.mcap_info_icon,
 .volume_info_icon,
 .fully_mcap_info_icon {
   margin-left: 3px;
@@ -595,6 +599,8 @@ nav {
   box-shadow: var(--container_shadow);
   color: var(--base);
   width: 100%;
+  align-self: stretch;
+  height: auto;
   font-size: 0.9rem;
 }
 
@@ -987,7 +993,8 @@ th {
   font-size: 0.9rem !important;
 }
 
-th, td {
+th,
+td {
   /* border: 1px solid black; */
   background-color: var(--bgColor);
   color: var(--base);
@@ -1147,41 +1154,54 @@ abbr {
 }
 
 /* FEAR & GREED GUAGE */
-.chart-gauge {
-  transform: scale(0.45);
-  height: 134px;
+.main_gauge_container {
+  /*   border: 2px solid aqua; */
+  display: flex;
+  padding: 20px 0px 0px 0px;
+  /* align-items: center; */
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.chart-color1 {
-  fill: #05fb9c;
-}
-
-.chart-color2 {
-  fill: #ff5900;
-}
-
-.chart-color3 {
-  fill: #e92213;
-}
-
-.needle,
-.needle-center {
-  fill: var(--base);
-}
-
-.index_container {
+.gauge_container {
+  border: 1px solid rgba(255, 255, 255, 0.322);
+  border-radius: 50px;
   position: relative;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.gauge_meter {
+  width: 200px;
+  height: 20px;
+  border-radius: 50px;
+  background: linear-gradient(to right, rgb(0, 205, 0), orange, red);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  width: 100%;
+}
+
+.gauge_needle {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 7px;
+  height: 30px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.62);
+  border-radius: 100px;
+  transform: translate(-50%, -50%);
+  transition: all 1s;
+  border: 1px solid rgba(0, 0, 0, 0.278);
 }
 
 .index_percent {
+  text-align: center;
+  margin: 0 auto;
   font-size: 1.2rem;
-  position: absolute;
-  top: 44%;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-  left: 50%;
-  transform: translate(-50%, -200%);
   background-color: var(--indexBgColor);
   border-radius: 5px;
   padding: 1px 10px;
@@ -1832,15 +1852,37 @@ pre {
           user-select: none;
 }
 
-.tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl + .tgl-btn {
+.tgl,
+.tgl:after,
+.tgl:before,
+.tgl *,
+.tgl *:after,
+.tgl *:before,
+.tgl + .tgl-btn {
   box-sizing: border-box;
+}
+
+.tgl::-moz-selection,
+.tgl:after::-moz-selection,
+.tgl:before::-moz-selection,
+.tgl *::-moz-selection,
+.tgl *:after::-moz-selection,
+.tgl *:before::-moz-selection,
+.tgl + .tgl-btn::-moz-selection {
+  background: none;
 }
 
 .tgl::-moz-selection, .tgl:after::-moz-selection, .tgl:before::-moz-selection, .tgl *::-moz-selection, .tgl *:after::-moz-selection, .tgl *:before::-moz-selection, .tgl + .tgl-btn::-moz-selection {
   background: none;
 }
 
-.tgl::selection, .tgl:after::selection, .tgl:before::selection, .tgl *::selection, .tgl *:after::selection, .tgl *:before::selection, .tgl + .tgl-btn::selection {
+.tgl::selection,
+.tgl:after::selection,
+.tgl:before::selection,
+.tgl *::selection,
+.tgl *:after::selection,
+.tgl *:before::selection,
+.tgl + .tgl-btn::selection {
   background: none;
 }
 
@@ -1856,7 +1898,8 @@ pre {
   user-select: none;
 }
 
-.tgl + .tgl-btn:after, .tgl + .tgl-btn:before {
+.tgl + .tgl-btn:after,
+.tgl + .tgl-btn:before {
   position: relative;
   display: block;
   content: "";
@@ -2138,7 +2181,7 @@ svg text {
   gap: 20px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1300px) {
   .main_highlights_container {
     flex-direction: column;
     width: 90%;
