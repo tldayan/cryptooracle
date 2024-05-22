@@ -256,7 +256,7 @@ useEffect(() => {
   }
 
 
-  useEffect( () => {
+  /* useEffect( () => {
 
     const fetchCurrencyMultiplier = async() => {
 
@@ -268,7 +268,7 @@ useEffect(() => {
       const DATA = await response.json()
 
       const multiplier = DATA.new_amount
-      /* setCurrencyMultiplier(multiplier) */
+      setCurrencyMultiplier(multiplier)
 
     } catch (error) {
       console.log(error.message)
@@ -284,7 +284,7 @@ useEffect(() => {
 
    return () => clearTimeout(updatedCurrencyLoadTimer)
    
-  },[selectedCurrency])
+  },[selectedCurrency]) */
 
  
   function handleSort(sortSelection) {
@@ -341,9 +341,9 @@ useEffect(() => {
           Watchlist
         </Link>
 
-        <div className="currency_container">
+        {/* <div className="currency_container">
           <button onClick={handleCurrencySwitch} className='currency_btn'>Currency: {selectedCurrency}</button>
-        </div>
+        </div> */}
 
         <div className="main_rows_container">
           <button onClick={openRowsContainer} className='show_rows_btn'>Show Rows: {coinsPerPage} &#9660;</button>
@@ -367,7 +367,7 @@ useEffect(() => {
       </div>
     </div>           
     <div className='crypto_list_container'>
-  {currentCoins.length && !settingCurrency ? (
+  {currentCoins.length /* && !settingCurrency */ ? (
     <table>
       <thead>
         <tr>
