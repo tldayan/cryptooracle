@@ -268,7 +268,7 @@ useEffect(() => {
       const DATA = await response.json()
 
       const multiplier = DATA.new_amount
-      setCurrencyMultiplier(multiplier)
+      /* setCurrencyMultiplier(multiplier) */
 
     } catch (error) {
       console.log(error.message)
