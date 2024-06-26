@@ -57,10 +57,11 @@ useEffect(() => {
         const data = await response.json();
 
         if (isMounted) { /* only sets state if the user is in the component */
-          setTrendingCoins(data.coins.slice(0, 3));
+          const filteredTrendingCoins = data.coins.slice(0, 3)
+          setTrendingCoins(filteredTrendingCoins);
           localStorage.setItem(
             "trendingCoinslocal",
-            JSON.stringify(data.coins.slice(0, 3))
+            JSON.stringify(filteredTrendingCoins)
           );
         }
       } catch (error) {
@@ -98,8 +99,9 @@ useEffect(() => {
         const exchanges = await response.json();
 
         if (isMounted) {
-          setExchanges(exchanges.slice(0, 3));
-          localStorage.setItem("exchangesLocal", JSON.stringify(exchanges.slice(0, 3)));
+          const filteredExchanges = exchanges.slice(0, 3)
+          setExchanges(filteredExchanges);
+          localStorage.setItem("exchangesLocal", JSON.stringify(filteredExchanges));
         }
       } catch (error) {
         console.log(error.message);
