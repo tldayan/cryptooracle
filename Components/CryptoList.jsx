@@ -413,7 +413,7 @@ useEffect(() => {
     <TableSkeleton />
   )}
 </div>
-    {!settingCurrency && <div className="pagination_container">
+    {<div className="pagination_container">
         <p className="pagination_info">Results: {`${firstIndex + 1}`} - {`${lastIndex}`} of {finalList.length}</p>
         <TablePagination currentPage={currentPage} setCurrentPage={setCurrentPage} numberOfPages={numberOfPages} startPage={startPage} endPage={endPage} />
         <p className="pagination_info">Page: {`${currentPage}`} of {`${numberOfPages.length}`}</p>
