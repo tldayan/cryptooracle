@@ -14,7 +14,7 @@ export const getCoins = async(page) => {
             throw new Error (`Could not fetch cryptocurrencies: ${response.status}`)
         }
 
-        const Coins = response.json()
+        const Coins = await response.json()
         return Coins 
 
     } catch(error) {
